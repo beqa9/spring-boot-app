@@ -10,5 +10,6 @@ public interface EmployeeService {
     Employee getEmployeeById(Integer id);
     Employee addEmployee(EmployeeModel model);
     Employee updateEmployee(Integer id, EmployeeModel model);
-    void deleteEmployee(Integer id);
+    void deleteEmployeeById(Integer id);
+
 }

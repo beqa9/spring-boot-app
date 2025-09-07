@@ -5,9 +5,12 @@ import ge.softlab.spring_boot_app.models.EmployeeModel;
 import ge.softlab.spring_boot_app.repositories.EmployeeRepository;
 import ge.softlab.spring_boot_app.repositories.PersonRepository;
 import ge.softlab.spring_boot_app.repositories.PositionRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -29,7 +32,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Integer id) {
-        return employeeRepo.findById(id).orElse(null);
+        Optional<Employee> optionalEmployee = employeeRepo.findById(id);
+        return optionalEmployee
+                .filter(employee -> !employee.isDeleted())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
     }
 
     @Override
@@ -43,7 +49,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(Integer id, EmployeeModel model) {
-        Employee existing = employeeRepo.findById(id).orElse(null);
+        Employee existing = employeeRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
         if (existing != null) {
             existing.setPerson(personRepo.findById(model.personId()).orElse(null));
             existing.setPosition(positionRepo.findById(model.positionId()).orElse(null));
@@ -54,7 +61,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(Integer id) {
-        employeeRepo.deleteById(id);
+    public void deleteEmployeeById(Integer id) {
+        Employee existingEmployee = employeeRepo.findById(id).orElse(null);
+        if (existingEmployee != null) {
+            existingEmployee.setDeleted(true); // mark as deleted
+            employeeRepo.save(existingEmployee);
+        }
     }
 }

@@ -1,12 +1,16 @@
 package ge.softlab.spring_boot_app.services;
 
+import ge.softlab.spring_boot_app.entities.Person;
 import ge.softlab.spring_boot_app.entities.User;
 import ge.softlab.spring_boot_app.models.UserModel;
 import ge.softlab.spring_boot_app.repositories.EmployeeRepository;
 import ge.softlab.spring_boot_app.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,12 +25,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepo.findAll();
+        return userRepo.findByIsDeletedFalse();
     }
 
     @Override
     public User getUserById(Integer id) {
-        return userRepo.findById(id).orElse(null);
+        Optional<User> optionalUser = userRepo.findById(id);
+        return optionalUser
+                .filter(user -> !user.isDeleted())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     @Override
@@ -40,7 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Integer id, UserModel model) {
-        User existing = userRepo.findById(id).orElse(null);
+        User existing = userRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         if (existing != null) {
             existing.setEmployee(employeeRepo.findById(model.employeeId()).orElse(null));
             existing.setUsername(model.username());
@@ -51,7 +59,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        userRepo.deleteById(id);
+    public void deleteUserById(Integer id) {
+        User existingUser = userRepo.findById(id).orElse(null);
+        if (existingUser != null) {
+            existingUser.setDeleted(true); // mark as deleted
+            userRepo.save(existingUser);
+        }
     }
 }

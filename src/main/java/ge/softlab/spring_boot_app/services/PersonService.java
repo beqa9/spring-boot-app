@@ -15,4 +15,6 @@ public interface PersonService {
     Person updatePersonByIdAndModel(Integer id, PersonModel personModel);
 
     void deletePersonById(Integer id);
+
+
 }

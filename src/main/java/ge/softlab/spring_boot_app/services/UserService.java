@@ -11,5 +11,5 @@ public interface UserService {
     User getUserById(Integer id);
     User addUser(UserModel model);
     User updateUser(Integer id, UserModel model);
-    void deleteUser(Integer id);
+    void deleteUserById(Integer id);
 }

@@ -4,6 +4,7 @@ package ge.softlab.spring_boot_app.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(schema = "public", name = "persons")
+@Where(clause = "is_deleted = false")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +26,7 @@ public class Person {
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 }
