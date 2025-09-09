@@ -33,14 +33,18 @@ dependencies {
           'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0',
           'org.flywaydb:flyway-core:9.16.3',
           'org.apache.poi:poi-ooxml:5.4.1',
+          'org.mapstruct:mapstruct:1.6.1',
           'org.springframework.boot:spring-boot-starter-validation',
           'org.springframework.boot:spring-boot-starter-security',
           'jakarta.validation:jakarta.validation-api:3.1.1',
           'javax.activation:activation:1.1'
     )
-	compileOnly 'org.projectlombok:lombok'
+    annotationProcessor(
+            'org.projectlombok:lombok',
+            'org.mapstruct:mapstruct-processor:1.6.1'
+    )
+    compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

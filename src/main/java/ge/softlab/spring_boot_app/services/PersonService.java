@@ -6,9 +6,9 @@ import ge.softlab.spring_boot_app.models.PersonModel;
 import java.util.List;
 
 public interface PersonService {
-    List<Person> getAllPersons();
+    List<PersonModel> getAllPersons();
 
-    Person getPersonById(Integer id);
+    PersonModel getPersonById(Integer id);
 
     Person addPersonByModel(PersonModel personModel);
 

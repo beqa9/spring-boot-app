@@ -6,10 +6,14 @@ import ge.softlab.spring_boot_app.models.EmployeeModel;
 import java.util.List;
 
 public interface EmployeeService {
-    List<Employee> getAllEmployees();
-    Employee getEmployeeById(Integer id);
+    List<EmployeeModel> getAllEmployees();
+
+    EmployeeModel getEmployeeById(Integer id);
+
     Employee addEmployee(EmployeeModel model);
+
     Employee updateEmployee(Integer id, EmployeeModel model);
+
     void deleteEmployeeById(Integer id);
 
 }

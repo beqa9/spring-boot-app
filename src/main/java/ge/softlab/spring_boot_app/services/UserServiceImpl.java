@@ -2,11 +2,13 @@ package ge.softlab.spring_boot_app.services;
 
 import ge.softlab.spring_boot_app.entities.Person;
 import ge.softlab.spring_boot_app.entities.User;
+import ge.softlab.spring_boot_app.mappers.UserMapper;
 import ge.softlab.spring_boot_app.models.UserModel;
 import ge.softlab.spring_boot_app.repositories.EmployeeRepository;
 import ge.softlab.spring_boot_app.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -17,25 +19,30 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
     private final EmployeeRepository employeeRepo;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepo, EmployeeRepository employeeRepo) {
+    public UserServiceImpl(UserRepository userRepo, EmployeeRepository employeeRepo, UserMapper userMapper) {
         this.userRepo = userRepo;
         this.employeeRepo = employeeRepo;
+        this.userMapper = userMapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<User> getAllUsers() {
-        return userRepo.findByIsDeletedFalse();
+    public List<UserModel> getAllUsers() {
+        return userMapper.toModelList(userRepo.findByIsDeletedFalse());
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public User getUserById(Integer id) {
-        Optional<User> optionalUser = userRepo.findById(id);
-        return optionalUser
-                .filter(user -> !user.isDeleted())
+    public UserModel getUserById(Integer id) {
+        User user = userRepo.findById(id)
+                .filter(u -> !u.isDeleted())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return userMapper.toModel(user);
     }
 
+    @Transactional
     @Override
     public User addUser(UserModel model) {
         User user = new User();
@@ -45,6 +52,7 @@ public class UserServiceImpl implements UserService {
         return userRepo.save(user);
     }
 
+    @Transactional
     @Override
     public User updateUser(Integer id, UserModel model) {
         User existing = userRepo.findById(id)
@@ -58,6 +66,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Transactional
     @Override
     public void deleteUserById(Integer id) {
         User existingUser = userRepo.findById(id).orElse(null);

@@ -18,7 +18,7 @@ public class PersonController {
     }
 
     @GetMapping
-    public List<Person> getAllPersons() {
+    public List<PersonModel> getAllPersons() {
         return personService.getAllPersons();
     }
 
@@ -28,7 +28,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Person getPersonById(@PathVariable Integer id) {
+    public PersonModel getPersonById(@PathVariable Integer id) {
         return personService.getPersonById(id);
     }
 

@@ -19,12 +19,12 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeModel> getAllEmployees() {
         return service.getAllEmployees();
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Integer id) {
+    public EmployeeModel getEmployeeById(@PathVariable Integer id) {
         return service.getEmployeeById(id);
     }
 

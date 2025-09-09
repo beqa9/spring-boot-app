@@ -7,9 +7,14 @@ import ge.softlab.spring_boot_app.models.UserModel;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers();
-    User getUserById(Integer id);
+
+    List<UserModel> getAllUsers();
+
+    UserModel getUserById(Integer id);
+
     User addUser(UserModel model);
+
     User updateUser(Integer id, UserModel model);
+
     void deleteUserById(Integer id);
 }

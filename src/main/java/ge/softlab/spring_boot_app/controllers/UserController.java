@@ -19,12 +19,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserModel> getAllUsers() {
         return service.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Integer id) {
+    public UserModel getUserById(@PathVariable Integer id) {
         return service.getUserById(id);
     }
 
