@@ -3,6 +3,7 @@ package ge.softlab.spring_boot_app.controllers;
 import ge.softlab.spring_boot_app.entities.Employee;
 import ge.softlab.spring_boot_app.models.EmployeeModel;
 import ge.softlab.spring_boot_app.services.EmployeeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@Tag(name = "employee-controller", description = "crud operations")
 public class EmployeeController {
 
     private final EmployeeService service;

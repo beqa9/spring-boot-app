@@ -3,6 +3,7 @@ package ge.softlab.spring_boot_app.controllers;
 import ge.softlab.spring_boot_app.entities.Person;
 import ge.softlab.spring_boot_app.models.PersonModel;
 import ge.softlab.spring_boot_app.services.PersonService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/persons")
+@Tag(name = "person-controller", description = "crud operations")
 public class PersonController {
     private final PersonService personService;
 

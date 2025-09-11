@@ -3,6 +3,7 @@ package ge.softlab.spring_boot_app.controllers;
 import ge.softlab.spring_boot_app.entities.Position;
 import ge.softlab.spring_boot_app.models.PositionModel;
 import ge.softlab.spring_boot_app.services.PositionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/positions")
+@Tag(name = "position-controller", description = "crud operations")
 public class PositionController {
 
     private final PositionService service;

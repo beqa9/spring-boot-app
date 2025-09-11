@@ -3,6 +3,7 @@ package ge.softlab.spring_boot_app.controllers;
 import ge.softlab.spring_boot_app.entities.UserFile;
 import ge.softlab.spring_boot_app.minio.MinioService;
 import ge.softlab.spring_boot_app.repositories.UserFileRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users/{userId}/files")
+@Tag(name = "User Files", description = "Upload and download user files")
 public class UserFileController {
 
     private final MinioService minioService;
