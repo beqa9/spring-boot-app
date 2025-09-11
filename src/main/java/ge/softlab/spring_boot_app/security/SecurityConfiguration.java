@@ -26,7 +26,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginHandler loginHandler) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
@@ -34,9 +34,10 @@ public class SecurityConfiguration {
                 )
                 .httpBasic(withDefaults())
                 .formLogin(form -> form
-                        .loginProcessingUrl("/auth/login") // <-- process login here
-                        .usernameParameter("username")     // expect form field "username"
-                        .passwordParameter("password")     // expect form field "password"
+                        .loginProcessingUrl("/auth/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .successHandler(loginHandler)
                         .permitAll()
                 )
                 .exceptionHandling(c -> c.authenticationEntryPoint(

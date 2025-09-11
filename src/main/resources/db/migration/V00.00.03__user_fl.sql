@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS user_files (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    file_name VARCHAR(255) NOT NULL,
+    object_name VARCHAR(255) NOT NULL,
+    bucket VARCHAR(100) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_logins (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ip_address VARCHAR(50),
+    user_agent VARCHAR(255)
+);

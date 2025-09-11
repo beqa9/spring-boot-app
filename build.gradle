@@ -37,7 +37,8 @@ dependencies {
           'org.springframework.boot:spring-boot-starter-validation',
           'org.springframework.boot:spring-boot-starter-security',
           'jakarta.validation:jakarta.validation-api:3.1.1',
-          'javax.activation:activation:1.1'
+          'javax.activation:activation:1.1',
+          'io.minio:minio:8.5.17'
     )
     annotationProcessor(
             'org.projectlombok:lombok',
