@@ -8,6 +8,7 @@ import ge.softlab.spring_boot_app.repositories.PersonRepository;
 import ge.softlab.spring_boot_app.repositories.PositionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toModel(employee);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Employee addEmployee(EmployeeModel model) {
         Employee employee = new Employee();
@@ -54,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepo.save(employee);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Employee updateEmployee(Integer id, EmployeeModel model) {
         Employee existing = employeeRepo.findById(id)
@@ -68,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteEmployeeById(Integer id) {
         Employee existingEmployee = employeeRepo.findById(id).orElse(null);

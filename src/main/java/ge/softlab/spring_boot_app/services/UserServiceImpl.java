@@ -8,6 +8,7 @@ import ge.softlab.spring_boot_app.repositories.EmployeeRepository;
 import ge.softlab.spring_boot_app.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toModel(user);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User addUser(UserModel model) {
         User user = new User();
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         return userRepo.save(user);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public User updateUser(Integer id, UserModel model) {
         User existing = userRepo.findById(id)
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUserById(Integer id) {
         User existingUser = userRepo.findById(id).orElse(null);
