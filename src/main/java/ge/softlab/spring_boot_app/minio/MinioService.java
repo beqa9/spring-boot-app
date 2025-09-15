@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -38,12 +40,20 @@ public class MinioService {
 
         String objectName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("userId", userId.toString());
+        metadata.put("fileName", file.getOriginalFilename());
+        metadata.put("uploadTime", LocalDateTime.now().toString());
+        metadata.put("contentType", file.getContentType());
+        metadata.put("fileSize", String.valueOf(file.getSize()));
+
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(props.getBucket())
                         .object(objectName)
                         .stream(file.getInputStream(), file.getSize(), -1)
                         .contentType(file.getContentType())
+                        .userMetadata(metadata)
                         .build()
         );
 
