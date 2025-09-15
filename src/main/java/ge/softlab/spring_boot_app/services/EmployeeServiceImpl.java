@@ -1,6 +1,7 @@
 package ge.softlab.spring_boot_app.services;
 
 import ge.softlab.spring_boot_app.entities.Employee;
+import ge.softlab.spring_boot_app.entities.Person;
 import ge.softlab.spring_boot_app.mappers.EmployeeMapper;
 import ge.softlab.spring_boot_app.models.EmployeeModel;
 import ge.softlab.spring_boot_app.repositories.EmployeeRepository;
@@ -32,17 +33,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<EmployeeModel> getAllEmployees() {
-        return employeeMapper.toModelList(employeeRepo.findByIsDeletedFalse());
+    public List<Employee> getAllEmployees() {
+        return employeeRepo.findByIsDeletedFalse();
+
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EmployeeModel getEmployeeById(Integer id) {
-        Employee employee = employeeRepo.findById(id)
+    public Employee getEmployeeById(Integer id) {
+        return employeeRepo.findById(id)
                 .filter(e -> !e.isDeleted())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
-        return employeeMapper.toModel(employee);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Person not found"));
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

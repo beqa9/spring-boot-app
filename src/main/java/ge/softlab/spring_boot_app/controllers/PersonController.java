@@ -1,6 +1,7 @@
 package ge.softlab.spring_boot_app.controllers;
 
 import ge.softlab.spring_boot_app.entities.Person;
+import ge.softlab.spring_boot_app.mappers.PersonMapper;
 import ge.softlab.spring_boot_app.models.PersonModel;
 import ge.softlab.spring_boot_app.services.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,15 +15,18 @@ import java.util.List;
 @Tag(name = "person-controller", description = "crud operations")
 public class PersonController {
     private final PersonService personService;
+    private final PersonMapper personMapper;
 
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, PersonMapper personMapper) {
         this.personService = personService;
+        this.personMapper = personMapper;
     }
 
     @GetMapping
     public List<PersonModel> getAllPersons() {
-        return personService.getAllPersons();
+        return personMapper.toModelList(personService.getAllPersons());
     }
+
 
     @PostMapping
     public Person addPerson(@RequestBody PersonModel personModel) {
@@ -31,7 +35,7 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public PersonModel getPersonById(@PathVariable Integer id) {
-        return personService.getPersonById(id);
+        return personMapper.toModel(personService.getPersonById(id));
     }
 
     @PutMapping("/{id}/update")

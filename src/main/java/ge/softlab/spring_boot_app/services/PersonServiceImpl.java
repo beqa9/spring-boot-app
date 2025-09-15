@@ -25,17 +25,16 @@ public class PersonServiceImpl implements PersonService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<PersonModel> getAllPersons() {
-        return personMapper.toModelList(personRepository.findByIsDeletedFalse());
+    public List<Person> getAllPersons() {
+        return personRepository.findByIsDeletedFalse();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public PersonModel getPersonById(Integer id) {
-        Person person = personRepository.findById(id)
+    public Person getPersonById(Integer id) {
+        return personRepository.findById(id)
                 .filter(p -> !p.isDeleted())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Person not found"));
-        return personMapper.toModel(person);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserModel> getAllUsers();
+    List<User> getAllUsers();
 
-    UserModel getUserById(Integer id);
+    User getUserById(Integer id);
 
     User addUser(UserModel model);
 

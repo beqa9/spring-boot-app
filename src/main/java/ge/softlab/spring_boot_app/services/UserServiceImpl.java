@@ -30,17 +30,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<UserModel> getAllUsers() {
-        return userMapper.toModelList(userRepo.findByIsDeletedFalse());
+    public List<User> getAllUsers() {
+        return userRepo.findByIsDeletedFalse();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public UserModel getUserById(Integer id) {
-        User user = userRepo.findById(id)
+    public User getUserById(Integer id) {
+        return userRepo.findById(id)
                 .filter(u -> !u.isDeleted())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        return userMapper.toModel(user);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Person not found"));
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
